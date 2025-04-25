@@ -87,3 +87,45 @@ img {
   max-width: 100px;
   filter: sepia(60%);
 }
+
+#chatbot-container {
+  border: 3px groove #a67c52;
+  background-color: #fffaf0;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+}
+
+#chat-log {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  background: #f4e6d7;
+  padding: 0.5rem;
+  border: 2px dashed #d2b48c;
+}
+
+.user-msg, .bot-msg {
+  margin: 0.5rem 0;
+}
+
+#chat-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#chat-input {
+  flex: 1;
+  padding: 0.5rem;
+  font-family: monospace;
+  border: 2px solid #a67c52;
+}
+
+#chat-form button {
+  background: #8b5e3c;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}

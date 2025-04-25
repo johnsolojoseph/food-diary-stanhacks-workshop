@@ -1,47 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Food Diary</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Diary</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
-  <h1>Food Diary</h1>
-  <form id="foodForm">
-    <input type="text" id="food" name="food" placeholder="Enter food name" required />
-    <input type="text" id="note" name="note" placeholder="Enter note" required />
-    <button type="submit">Add</button>
-  </form>
+    <h1>Food Diary</h1>
 
-  <ul id="diaryList"></ul>
+    <form id="foodForm">
+        <input type="text" id="food" name="food" placeholder="Enter food name" required />
+        <input type="text" id="note" name="note" placeholder="Enter note" required />
+        <button type="submit">Add</button>
+    </form>
 
-  <script>
-    const form = document.getElementById('foodForm');
-    const diaryList = document.getElementById('diaryList');
+    <ul id="diaryList"></ul>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const food = document.getElementById('food').value;
-      const note = document.getElementById('note').value;
+    <div id="chatbot-container">
+        <div id="chat-log"></div>
+        <form id="chat-form">
+            <input type="text" id="chat-input" placeholder="Ask a nutrition question..." required />
+            <button type="submit">Send</button>
+        </form>
+    </div>
 
-      const response = await fetch('/foods', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ food,note }),
-      });
+    <script>
 
-      const data = await response.json();
-      diaryList.innerHTML = '';
-      data.foods.forEach(item => {
-        const entry = document.createElement('li');
-        entry.innerHTML = `<strong>${item.name}</strong> - ${item.calories} cal, <br>Note: ${item.note}<br>
+        const chatForm = document.getElementById('chat-form');
+        const chatLog = document.getElementById('chat-log');
+        const chatInput = document.getElementById('chat-input');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userMessage = chatInput.value;
+            chatLog.innerHTML += `<div class="user-msg">🧍: ${userMessage}</div>`;
+            chatInput.value = '';
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: userMessage }),
+            });
+            const data = await response.json();
+            const parsedText = data.reply
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/^- (.*$)/gim, '<li>$1</li>')
+                .replace(/\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+                .replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
+            chatLog.innerHTML += `<div class="bot-msg">🤖: ${parsedText}</div>`;
+        });
+
+        const form = document.getElementById('foodForm');
+        const diaryList = document.getElementById('diaryList');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const food = document.getElementById('food').value;
+            const note = document.getElementById('note').value;
+
+            const response = await fetch('/foods', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ food, note }),
+            });
+
+            const data = await response.json();
+            diaryList.innerHTML = '';
+            data.foods.forEach(item => {
+                const entry = document.createElement('li');
+                entry.innerHTML = `<strong>${item.name}</strong> - ${item.calories} cal, <br>Note: ${item.note}<br>
           ${item.image ? `<img src="${item.image}" width="100"/>` : ''}`;
-        diaryList.appendChild(entry);
-      });
+                diaryList.appendChild(entry);
+            });
 
-      form.reset();
-    });
-  </script>
+            form.reset();
+        });
+    </script>
 </body>
+
 </html>
