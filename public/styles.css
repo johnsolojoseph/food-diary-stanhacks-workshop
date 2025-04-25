@@ -1,45 +1,42 @@
-/* Retro Vintage Radio Look */
-
 body {
   background-color: #f4e6d7;
   color: #3b2f2f;
   font-family: 'Courier New', monospace;
-  padding: 2rem;
+  padding: 1rem;
   max-width: 600px;
   margin: auto;
   border: 5px double #a67c52;
-  background-image: repeating-linear-gradient(
-    0deg,
-    #f4e6d7 0px,
-    #f4e6d7 4px,
-    #f1dbc7 4px,
-    #f1dbc7 8px
-  );
+  background-image: repeating-linear-gradient(0deg,
+      #f4e6d7 0px,
+      #f4e6d7 4px,
+      #f1dbc7 4px,
+      #f1dbc7 8px);
   box-shadow: inset 0 0 10px #a67c52, 0 0 20px #d2b48c;
 }
 
 h1 {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #5c4033;
   background-color: #d2b48c;
   padding: 0.5rem;
   border: 3px solid #a67c52;
   box-shadow: inset 0 0 6px #8b5e3c;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-weight: bold;
   text-shadow: 1px 1px #fffaf0;
 }
 
 form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   justify-content: center;
   margin-bottom: 1rem;
 }
 
 input {
-  flex: 1;
+  flex: 1 1 100%;
   padding: 0.5rem;
   background: #fffaf0;
   border: 2px solid #a67c52;
@@ -50,6 +47,7 @@ input {
 }
 
 button {
+  flex: 1 1 auto;
   background: #8b5e3c;
   color: #fffaf0;
   border: 2px solid #5c4033;
@@ -84,7 +82,8 @@ img {
   margin-top: 0.5rem;
   border: 2px solid #a67c52;
   border-radius: 6px;
-  max-width: 100px;
+  max-width: 100%;
+  height: auto;
   filter: sepia(60%);
 }
 
@@ -105,27 +104,49 @@ img {
   border: 2px dashed #d2b48c;
 }
 
-.user-msg, .bot-msg {
+.user-msg,
+.bot-msg {
   margin: 0.5rem 0;
+  word-wrap: break-word;
 }
 
 #chat-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 #chat-input {
-  flex: 1;
+  flex: 1 1 100%;
   padding: 0.5rem;
   font-family: monospace;
   border: 2px solid #a67c52;
+  border-radius: 4px;
 }
 
 #chat-form button {
+  flex: 1 1 auto;
   background: #8b5e3c;
   color: white;
   padding: 0.5rem 1rem;
   border: none;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Optional: Narrow screen tweaks */
+@media (max-width: 480px) {
+  body {
+    padding: 1rem 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
 }
